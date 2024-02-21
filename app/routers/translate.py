@@ -18,6 +18,8 @@ class TranslationResponse(BaseModel):
     translation: str
     from_code: str
     to_code: str
+    meaning: list = None
+    similar_words: list = None
 
 @router.post("/translate/")
 def translate_text(request: TranslationRequest):
@@ -26,14 +28,13 @@ def translate_text(request: TranslationRequest):
         return TranslationResponse(translation="", from_code=request.from_code, to_code=request.to_code)
 
     # If there is only one word, add meaning to it
-    if len(request.text.strip().split()) == 1:
-        meaning, similar_words = get_similar_words(request.text, request.from_code)
-        translation = translation=translate(request.text, request.from_code, request.to_code)
-        return_text = f"{translation}\n\n Meaning: {meaning}\n\n Similar words: {', '.join(similar_words)}"
-        return TranslationResponse(translation=return_text, from_code=request.from_code, to_code=request.to_code)
-    
+    #if len(request.text.strip().split()) == 1:
+    #    meaning, similar_words = get_similar_words(request.text, request.to_code)
+    #    translation = translation=translate(request.text, request.from_code, request.to_code)
+    #    return TranslationResponse(translation=translation, from_code=request.from_code, to_code=request.to_code, meaning=meaning, similar_words=similar_words)
+
     translation = translate(request.text, request.from_code, request.to_code)
-    return TranslationResponse(translation=translation, from_code=request.from_code, to_code=request.to_code)
+    return TranslationResponse(translation=translation, from_code=request.from_code, to_code=request.to_code, meaning=[], similar_words=[])
 
 @router.get("/translate/list/")
 def available_languages():
