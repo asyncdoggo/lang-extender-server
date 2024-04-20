@@ -2,8 +2,10 @@ import argostranslate
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import RedirectResponse
-from app.routers import translate, detect
+from app.routers import translate, detect, completion
 import app.setup as setup
+from app.util.download_model import download_model
+
 
 app = FastAPI()
 
@@ -20,7 +22,7 @@ app.add_middleware(
 
 app.include_router(translate.router)
 app.include_router(detect.router)
-
+app.include_router(completion.router)
 
 def setup_packages():
     available_packages = argostranslate.package.get_available_packages()
@@ -37,6 +39,11 @@ def setup_packages():
     setup.install_packages(pack_list, False)
 
 setup_packages()
+
+
+
+download_model("gpt2", "models/gpt2")
+
 
 @app.get("/")
 def read_root():

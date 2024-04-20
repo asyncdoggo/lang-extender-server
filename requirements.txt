@@ -3,3 +3,4 @@ argostranslate
 lexilang
 uvicorn
 PyMultiDictionary
+transformers

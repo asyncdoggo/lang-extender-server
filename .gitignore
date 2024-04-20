@@ -3,3 +3,4 @@ venv
 available_packages.txt
 installed_packages.json
 __pycache__
+models
